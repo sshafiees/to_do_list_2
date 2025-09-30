@@ -1,16 +1,18 @@
 'use client';
 import React, { memo, useCallback } from 'react';
 import Block from '../layout/block';
+import { useTaskFiltersContext } from '../../hooks/TaskFiltersContext';
 
-type SearchProps = {
-  searchText: string;
-  setSearchText: (value: string) => void;
-};
-
-const Search = memo(function Search({ searchText, setSearchText }: SearchProps) {
-  const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(event.target.value);
-  }, [setSearchText]);
+const Search = memo(function Search() {
+  const { filters, actions } = useTaskFiltersContext();
+  const { searchText } = filters;
+  const { setSearchText } = actions;
+  const handleInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchText(event.target.value);
+    },
+    [setSearchText]
+  );
 
   return (
     <Block>

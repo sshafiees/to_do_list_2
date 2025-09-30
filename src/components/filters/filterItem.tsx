@@ -21,16 +21,13 @@ export default function FilterItem({
       </label>
       <select
         className="block w-full border border-gray-300 rounded-md p-2"
+        value={currentValue ?? ''}
         onChange={e => onChange(e.target.value)}
       >
         {listItems &&
           listItems.map(item => {
             return (
-              <option
-                key={item.value}
-                value={item.value}
-                selected={currentValue === item.value}
-              >
+              <option key={item.value} value={item.value}>
                 {item.label}
               </option>
             );

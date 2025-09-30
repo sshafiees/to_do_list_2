@@ -1,12 +1,11 @@
+'use client';
+
 import React, { memo } from 'react';
 import TaskItem from './taskItem';
-import { TaskItemType } from '../../types/tasks';
+import { useTaskFiltersContext } from '../../hooks/TaskFiltersContext';
 
-type TasksListProps = {
-  taskList: TaskItemType[];
-};
-
-const TasksList = memo(function TasksList({ taskList }: TasksListProps) {
+const TasksList = memo(function TasksList() {
+  const { filteredTasks: taskList } = useTaskFiltersContext();
   if (taskList.length === 0) {
     return (
       <div className="text-center py-8" role="status" aria-live="polite">
