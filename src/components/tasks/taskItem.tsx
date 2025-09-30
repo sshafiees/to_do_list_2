@@ -79,7 +79,11 @@ const TaskItem = memo(function TaskItem({
 
   return (
     <Block>
-      <article role="listitem" aria-labelledby={`task-title-${taskId}`}>
+      <article
+        className="group"
+        role="listitem"
+        aria-labelledby={`task-title-${taskId}`}
+      >
         <div className="flex justify-between">
           <div className="flex gap-2 mb-2">
             <button
@@ -111,6 +115,9 @@ const TaskItem = memo(function TaskItem({
               className="p-1 hover:bg-gray-100 rounded"
               aria-label="ویرایش وظیفه"
               title="ویرایش وظیفه"
+              onClick={() => {
+                window.location.href = `/tasks/${taskId}/edit`;
+              }}
             >
               <PencilSquareIcon className="h-5 w-5 text-gray-500" />
             </button>
@@ -128,7 +135,7 @@ const TaskItem = memo(function TaskItem({
         <p className="mb-2" id={`task-description-${taskId}`}>
           {description}
         </p>
-        <div className="flex flex-wrap gap-4 text-sm">
+        <div className="flex flex-wrap gap-4 text-sm max-h-0 overflow-hidden opacity-0 transition-all duration-300 ease-in-out group-hover:max-h-20 group-hover:opacity-100">
           <div className="flex items-center">
             <FolderIcon className="h-4 w-4 text-gray-500" aria-hidden="true" />
             <span

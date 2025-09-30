@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import Search from '../components/search';
 import Filters from '../components/filters';
@@ -46,6 +47,15 @@ export default function Home() {
               <Filters />
               <Search />
               <Overview />
+              <div className="flex justify-end">
+                <Link
+                  href="/tasks/new"
+                  className="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-white text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  aria-label="افزودن وظیفه جدید"
+                >
+                  افزودن وظیفه جدید
+                </Link>
+              </div>
               <TasksList />
             </div>
           </div>

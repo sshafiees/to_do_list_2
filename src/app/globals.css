@@ -1,15 +1,18 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @font-face {
   font-family: 'YekanBakh';
-  src: url('./../../public/YekanBakh/webfonts/woff2/YekanBakhNoEn-Regular.woff2') format('woff2'),
-  url('./../../public/YekanBakh/webfonts/woff/YekanBakhNoEn-Regular.woff') format('woff');
+  src: url('./../../public/YekanBakh/webfonts/woff2/YekanBakhNoEn-Regular.woff2')
+      format('woff2'),
+    url('./../../public/YekanBakh/webfonts/woff/YekanBakhNoEn-Regular.woff')
+      format('woff');
   font-weight: 400;
   font-style: normal;
 }
 
 :root {
-  --background: #f9fafb;
+  /* Slightly darker than white to contrast white cards */
+  --background: #f3f4f6;
   --foreground: #171717;
 }
 

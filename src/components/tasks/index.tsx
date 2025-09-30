@@ -15,7 +15,7 @@ const TasksList = memo(function TasksList() {
   }
 
   return (
-    <section aria-label="لیست وظایف" role="list">
+    <section aria-label="لیست وظایف" role="list" className="space-y-4">
       {taskList.map(task => (
         <TaskItem
           key={task.taskId}
