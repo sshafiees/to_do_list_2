@@ -2,10 +2,12 @@ import './globals.css';
 import Header from '../components/layout/header';
 import ErrorBoundary from '../components/error-boundary';
 import React from 'react';
+import { AuthProvider } from '../hooks/AuthContext';
 
 export const metadata = {
   title: 'مدیریت وظایف من - Todo List App',
-  description: 'یک اپلیکیشن مدیریت وظایف پیشرفته با قابلیت فیلتر، جستجو و دسته‌بندی',
+  description:
+    'یک اپلیکیشن مدیریت وظایف پیشرفته با قابلیت فیلتر، جستجو و دسته‌بندی',
   keywords: ['todo', 'task management', 'productivity', 'مدیریت وظایف'],
   authors: [{ name: 'Todo App Developer' }],
   viewport: 'width=device-width, initial-scale=1',
@@ -27,10 +29,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="fa" dir="rtl">
       <body className={`antialiased`}>
         <ErrorBoundary>
-          <Header />
-          <main role="main">
-            {children}
-          </main>
+          <AuthProvider>
+            <Header />
+            <main role="main">{children}</main>
+          </AuthProvider>
         </ErrorBoundary>
       </body>
     </html>

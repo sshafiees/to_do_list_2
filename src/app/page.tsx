@@ -17,6 +17,10 @@ const TasksList = dynamic(() => import('../components/tasks'), {
 });
 
 export default function Home() {
+  React.useEffect(() => {
+    console.log('Home page mounted');
+  }, []);
+
   return (
     <>
       {/* Structured Data for SEO */}
@@ -52,6 +56,7 @@ export default function Home() {
                   href="/tasks/new"
                   className="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-white text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   aria-label="افزودن وظیفه جدید"
+                  onClick={() => console.log('Add task button clicked')}
                 >
                   افزودن وظیفه جدید
                 </Link>

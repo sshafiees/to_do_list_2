@@ -3,7 +3,7 @@
 import React, { useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { taskList } from '../../../../mocks/tasks';
+import { supabaseBrowser } from '../../../../lib/supabaseClient';
 
 type FormValues = {
   title: string;
@@ -21,40 +21,84 @@ export default function EditTaskPage() {
     ? params.taskId[0]
     : (params?.taskId as string);
 
-  const task = useMemo(() => taskList.find(t => t.taskId === taskId), [taskId]);
+  const [task, setTask] = React.useState<any | null>(null);
+  const [loading, setLoading] = React.useState<boolean>(true);
+  React.useEffect(() => {
+    let mounted = true;
+    async function load() {
+      const { data: userData } = await supabaseBrowser.auth.getUser();
+      if (!userData.user) {
+        router.replace('/auth/login');
+        return;
+      }
+      const { data, error } = await supabaseBrowser
+        .from('tasks')
+        .select('*')
+        .eq('id', taskId)
+        .single();
+      if (!mounted) return;
+      setLoading(false);
+      if (error) return;
+      setTask(data);
+    }
+    load();
+    return () => {
+      mounted = false;
+    };
+  }, [taskId]);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
-    defaultValues: task
+    defaultValues: {
+      title: '',
+      description: '',
+      dueDate: '',
+      priority: 'medium',
+      status: 'notStarted',
+      category: 'work',
+    },
+    values: task
       ? {
-          title: task.title,
-          description: task.description,
-          dueDate: task.dueDate
-            ? new Date(task.dueDate).toISOString().slice(0, 10)
+          title: task.title || '',
+          description: task.description || '',
+          dueDate: task.due_date
+            ? new Date(task.due_date).toISOString().slice(0, 10)
             : '',
-          priority: task.priority,
-          status: task.status,
-          category: task.category,
+          priority: (task.priority as any) || 'medium',
+          status: (task.status as any) || 'notStarted',
+          category: task.category || 'work',
         }
-      : {
-          title: '',
-          description: '',
-          dueDate: '',
-          priority: 'medium',
-          status: 'notStarted',
-          category: 'work',
-        },
+      : undefined,
   });
 
-  const onSubmit = async (_data: FormValues) => {
-    alert(
-      'ویرایش با موفقیت ثبت شد (صرفاً نمایشی). اتصال به API در آینده انجام می‌شود.'
-    );
+  const onSubmit = async (data: FormValues) => {
+    const { error } = await supabaseBrowser
+      .from('tasks')
+      .update({
+        title: data.title.trim(),
+        description: data.description?.trim() || null,
+        due_date: data.dueDate ? new Date(data.dueDate).toISOString() : null,
+        priority: data.priority,
+        status: data.status,
+        category: data.category,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', taskId);
+    if (error) {
+      alert(error.message);
+      return;
+    }
     router.push('/');
   };
+
+  if (loading) {
+    return (
+      <div className="container mx-auto max-w-2xl p-6">در حال بارگذاری…</div>
+    );
+  }
 
   if (!task) {
     return (
